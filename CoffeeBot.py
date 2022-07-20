@@ -1,5 +1,4 @@
 #My coffee bot Yaniv Bouzaglo version 1.3
-import Finale
 import pymongo
 import time
 import ssl
