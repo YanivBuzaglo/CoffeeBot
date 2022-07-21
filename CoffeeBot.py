@@ -18,7 +18,7 @@ load_dotenv()
 db_creds = os.getenv("db_creds")
 env1 = os.getenv("env1")
 env2 = os.getenv("env2")
-print("Hello and welcome to our Coffee Bot&Network_mapper Brute Forcing&Banner Grabbing able tool version 1.3 Developed by Yaniv Bouzaglo.\n\n"
+print("Hello and welcome to our Coffee Bot version 1.3 Developed by Yaniv Bouzaglo.\n\n"
       "Your Coffee orders will sent from our bot to our working department kitchen directly.\n"
       "This tool is for educational purposes only!, using it for malicious purposes will be on your responsibility.")
 client = pymongo.MongoClient(f"mongodb+srv://{db_creds}.l2zbb.mongodb.net/?retryWrites=true&w=majority")
@@ -114,6 +114,7 @@ def code_gen():
     code = random.randint(100000,999999)
     return code
 def sign_in():
+    print("Sign in to the bot.")
     global inp_a
     print(f"This bot uses two step authentication.")
     inp_a = input("Please insert your email address here ==> ")
@@ -125,11 +126,26 @@ def sign_in():
         for key in db:
             if inp_a == a and inp_b == b:
                 fin = True
-                return fin
+                if fin == True:
+                    print("Sending verification email to your mail....")
+                    code = code_gen()
+                    email = inp_a
+                    body = f"""
+Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
+            """
+                Verfication_Mail(email,body)
+                code_input = int(input("Insert the six digits code here ==> "))
+                if code_input == code:
+                    print("Signed in successfully!")
+                    break
+                else:
+                    print("Authentication failed!\nDisconnecting....")
+                    exit()
             else:
                 fin = False
-    return fin 
-def forgot_password():
+            
+     
+def Forgot_Password():
     email = input("We'll send an email to reset your password, INSERT EMAIL HERE ==> ")
     for i in database.find({"Type":"Registered","Email":f"{email}"}):
         old_password = {"Password":i["Password"]}
@@ -218,9 +234,10 @@ def Network_Mapper():
             except Exception:
                 print(f"The password {password} failed!")
     attack()
-def banner_grabbing():
+def Banner_Grabbing():
     while True:
         try:
+            print("Type exit to go back to main menu.")
             sock = socket.socket()
             target = input("Insert your target IP: ==> ")
             port = input("Insert port to scan in the target machine: ==> ")
@@ -246,48 +263,15 @@ def main():
     "----- INSERT YOUR PICK HERE ----- > ")
     if welcome_options_input == 'a' or welcome_options_input == 'A':
         sign_up()
-        print("Sign in to the bot.")
-        auth = sign_in()
-        if auth == True:
-            print("Sending verification email to your mail....")
-            code = code_gen()
-            email = inp_a
-            body = f"""
-Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
-            """
-            Verfication_Mail(email,body)
-            code_input = int(input("Insert the six digits code here ==> "))
-            if code_input == code:
-                print("Signed in successfully!")
-            else:
-                print("Authentication failed!\nDisconnecting....")
-                exit()
+        sign_in()
     elif welcome_options_input == 'b' or welcome_options_input == 'B':
-        auth = sign_in()
-        if auth == True:
-            print("Sending verification email to your mail....")
-            code = code_gen()
-            email = inp_a
-            body = f"""
-Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
-            """
-            Verfication_Mail(email,body)
-            code_input = int(input("Insert the six digits code here ==> "))
-            if code_input == code:
-                print("Signed in successfully!")
-            else:
-                print("Authentication failed!\nDisconnecting....")
-                time.sleep(3)
-                exit()
-        else:
-            print("Wrong mail address or password.")
-            main()
+        sign_in()
     elif  welcome_options_input == 'c' or welcome_options_input == 'C':
-        forgot_password()
+        Forgot_Password()
     elif welcome_options_input == 'd' or welcome_options_input == 'D':
         Network_Mapper()
     elif welcome_options_input == 'e' or welcome_options_input == 'E':
-        banner_grabbing()
+        Banner_Grabbing()
     else:
         pass
 main()
