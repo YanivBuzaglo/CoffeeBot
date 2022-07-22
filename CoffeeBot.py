@@ -27,7 +27,7 @@ db = client.test
 CoffeeBotDB = client["CoffeeBotDB"]
 database = CoffeeBotDB["userDB"]
 orders_history = CoffeeBotDB["orders history"]
-welcome_options = ["[a] Sign up.","[b] Sign in.","[c] Forgot Password.","[d] Network Mapper.","[e] Banner Grabbing."]
+welcome_options = ["[a] Sign up.","[b] Sign in.","[c] Forgot Password.","[d] Network Mapper.","[e] Banner Grabbing.","[f] Calculator"]
 menu = ["Black Coffee","Cappuccino","Americano","Espresso","Latte","Tea"]
 email_from = f"{env1}"
 email_pass = f"{env2}"
@@ -291,6 +291,53 @@ def Menu_Inp(email):
     tme = time.ctime(time.time())
     menu_input_dict = {"Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
     orders_history.insert_one(menu_input_dict)
+def Calculator():
+#calculator
+    def plus(num1,num2):
+        return num1 + num2
+
+    def minus(num1,num2):
+        return num1 - num2
+
+    def multi(num1,num2):
+        return num1 * num2
+
+    def divide(num1,num2):
+        return num1 / num2
+
+    def modoulo(num1,num2):
+        return num1 % num2
+
+    def calc():
+        while True:
+            try:
+                num1 = int(input('num1: '))
+                action = input('+,-,/,*,% ')
+                num2 = int(input('num2: '))
+                if action == '+':
+                    print(plus(num1,num2))
+                elif action == '-':
+                    print(minus(num1,num2))
+                elif action == '/':
+                    print(divide(num1,num2))
+                elif action == '*':
+                    print(multi(num1,num2))
+                elif action == '%':
+                    print(modoulo(num1,num2))
+                else:
+                    print('Wrong action')
+                brk = input('Press q to quit press any key to continue.\n')
+                if brk == 'q':
+                    break
+            except ZeroDivisionError as Error101:
+                print(Error101,'error101,Cannot Divide by zero!')
+            except ValueError as Error102:
+                print(Error102,'error102,invalid input digits only.')
+            except:
+                print('HAPPY PRACTICE')
+        main()
+    calc()
+
 def main():
     welcome_options_input = input("Please choose from the list ahead :\n"
     f"{welcome_options[0]}\n\n"
@@ -298,6 +345,7 @@ def main():
     f"{welcome_options[2]}\n\n"
     f"{welcome_options[3]}\n\n"
     f"{welcome_options[4]}\n\n"
+    f"{welcome_options[5]}\n\n"
     "----- INSERT YOUR PICK HERE ----- > ")
     if welcome_options_input == 'a' or welcome_options_input == 'A':
         sign_up()
@@ -321,6 +369,8 @@ def main():
         Network_Mapper()
     elif welcome_options_input == 'e' or welcome_options_input == 'E':
         Banner_Grabbing()
+    elif welcome_options_input == 'f' or welcome_options_input == 'F':
+        Calculator()
     else:
         pass
 main()
