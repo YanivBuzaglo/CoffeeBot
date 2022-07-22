@@ -28,7 +28,7 @@ db = client.test
 CoffeeBotDB = client["CoffeeBotDB"]
 database = CoffeeBotDB["userDB"]
 orders_history = CoffeeBotDB["orders history"]
-welcome_options = ["[a] Sign up.","[b] Sign in.","[c] Forgot Password.","[d] Network Mapper.","[e] Banner Grabbing.","[f] Calculator"]
+welcome_options = ["[a] Sign up.","[b] Sign in.","[c] Orders History.","[d] Forgot Password.","[e] Network Mapper.","[f] Banner Grabbing.","[g] Calculator"]
 menu = ["Black Coffee","Cappuccino","Americano","Espresso","Latte","Tea"]
 email_from = f"{env1}"
 email_pass = f"{env2}"
@@ -312,7 +312,7 @@ def Menu_Inp(email):
             pass 
     tme = time.ctime(time.time())
     menu_input_dict = {"Type":"Orders History","Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
-    print("Mmmm, Great chice sir, just chill, we'll get the coffee to you.")
+    print("Mmmm, Great choice sir, just chill, we'll get the coffee to you.")
     time.sleep(2)
     print("In a moment.....")
     time.sleep(2)
@@ -372,6 +372,25 @@ def Calculator():
                 print('HAPPY PRACTICE')
         main()
     calc()
+def OrdersHistory(email):
+    for i in orders_history.find({"Type":"Orders History","Email":f"{email}"}):
+        time_sec = (i["Time"])
+        from_mail = (i["Email"])
+        item = (i["Item"])
+        data = (f"Ordered {item} on {time_sec} from {from_mail}\n")
+        with open('Orders History.txt','a') as myfile:
+            myfile.write(data)
+    print("Orders History file just created, it will be available for the next 60 seconds, you can copy the date to an external file.")
+    t = 60
+    while t:
+        mins = t // 60
+        secs = t % 60
+        timer = '{:02d}:{:02d}'.format(mins,secs)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
+    print("=== Deleting file! ===")
+    os.remove("Orders History.txt")
 
 def main():
     welcome_options_input = input("Please choose from the list ahead :\n"
@@ -381,6 +400,7 @@ def main():
     f"{welcome_options[3]}\n\n"
     f"{welcome_options[4]}\n\n"
     f"{welcome_options[5]}\n\n"
+    f"{welcome_options[6]}\n\n"
     "----- INSERT YOUR PICK HERE ----- > ")
     if welcome_options_input == 'a' or welcome_options_input == 'A':
         sign_up()
@@ -399,12 +419,15 @@ def main():
             time.sleep(3)
             main()
     elif  welcome_options_input == 'c' or welcome_options_input == 'C':
+        if sign_in() == True:
+            OrdersHistory(email)
+    elif  welcome_options_input == 'd' or welcome_options_input == 'D':
         Forgot_Password()
-    elif welcome_options_input == 'd' or welcome_options_input == 'D':
-        Network_Mapper()
     elif welcome_options_input == 'e' or welcome_options_input == 'E':
-        Banner_Grabbing()
+        Network_Mapper()
     elif welcome_options_input == 'f' or welcome_options_input == 'F':
+        Banner_Grabbing()
+    elif welcome_options_input == 'g' or welcome_options_input == 'G':
         Calculator()
     else:
         pass
