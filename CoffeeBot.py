@@ -140,6 +140,7 @@ Hye there, In order to sign in to our coffee bot please insert the code {code} t
                     break
                 else:
                     print("Authentication failed!\nDisconnecting....")
+                    time.sleep(3)
                     exit()
             else:
                 fin = False
