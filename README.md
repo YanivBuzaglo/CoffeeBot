@@ -12,4 +12,8 @@ Coffee bot combined with Cyber Security tools written in python.
 5. Once you run the main script, the main menu of this app will be displayed, the first three options a+b+c are represents the coffee bot.
 
 # Sign up, Sign in and Forgot Password funtions ==>
-6. The a options is the sign up function, once tou choose it, It will ask you t
+6. The a options is the sign up function, once tou choose it, It will ask you to your name, username, email and password.
+
+'''bash
+pip install scapy
+'''

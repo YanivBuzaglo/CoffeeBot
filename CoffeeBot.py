@@ -289,7 +289,7 @@ def Menu_Inp(email):
         else:
             pass 
     tme = time.ctime(time.time())
-    menu_input_dict = {"Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
+    menu_input_dict = {"Type":"Orders History","Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
     orders_history.insert_one(menu_input_dict)
 def Calculator():
 #calculator
