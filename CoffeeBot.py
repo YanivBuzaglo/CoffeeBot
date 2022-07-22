@@ -138,39 +138,41 @@ def code_gen():
     code = random.randint(100000,999999)
     return code
 def sign_in():
-    global email
-    print("Sign in to the bot.")
-    global inp_a
-    print(f"This bot uses two step authentication.")
-    inp_a = input("Please insert your email address here ==> ")
-    inp_b = input("Please insert your password here ==> ")
-    for i in database.find({"Type":"Registered"}):
-        a = i["Email"]
-        b = i["Password"]
-        db = {f'{a}',f'{b}'}
-        for key in db:
-            if inp_a == a and inp_b == b:
-                fin = True
-                if fin == True:
-                    print("Sending verification email to your mail....")
-                    code = code_gen()
-                    email = inp_a
-                    body = f"""
-Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
-            """
-                Verfication_Mail(email,body)
-                code_input = int(input("Insert the six digits code here ==> "))
-                if code_input == code:
-                    print("Signed in successfully!")
-                    return True
-                    break
+    try:
+        global email
+        print("Sign in to the bot.")
+        global inp_a
+        print(f"This bot uses two step authentication.")
+        inp_a = input("Please insert your email address here ==> ")
+        inp_b = input("Please insert your password here ==> ")
+        for i in database.find({"Type":"Registered"}):
+            a = i["Email"]
+            b = i["Password"]
+            db = {f'{a}',f'{b}'}
+            for key in db:
+                if inp_a == a and inp_b == b:
+                    fin = True
+                    if fin == True:
+                        print("Sending verification email to your mail....")
+                        code = code_gen()
+                        email = inp_a
+                        body = f"""
+    Hye there, In order to sign in to our coffee bot please insert the code {code} to the bot .
+                """
+                    Verfication_Mail(email,body)
+                    code_input = int(input("Insert the six digits code here ==> "))
+                    if code_input == code:
+                        print("Signed in successfully!")
+                        return True
+                        break
+                    else:
+                        print("Authentication failed!\nDisconnecting....")
+                        time.sleep(3)
+                        exit()
                 else:
-                    print("Authentication failed!\nDisconnecting....")
-                    time.sleep(3)
-                    exit()
-            else:
-                fin = False
-            
+                    fin = False
+    except ValueError as e:
+        print(f"Error {e}, Insert digits only")            
      
 def Forgot_Password():
     email = input("We'll send an email to reset your password, INSERT EMAIL HERE ==> ")
