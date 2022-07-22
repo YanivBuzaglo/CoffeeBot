@@ -201,7 +201,7 @@ def Network_Mapper():
     target = input("Please insert your target IP: ==> ")
 
     # Creating variable that equals to all registered ports
-    Registered_Ports = range(1,100)
+    Registered_Ports = range(1,1025)
 
     # Creating an empty list by name Open_Ports
     Open_Ports = []

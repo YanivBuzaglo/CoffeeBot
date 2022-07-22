@@ -8,7 +8,7 @@ Coffee bot combined with Cyber Security tools written in python.
 
 4. Once you successfully done section 2 and 3, you are good to go(make sure you got the main script CoffeeBot.py + PasswordList.txt + Order.jpg).
 
-5. Once you run the main script, the main menu of this app will be displayed, the first three options a+b+c+d are represents the coffee bot.
+5. Once you run the main script, the main menu of this app will be displayed, the first four options a+b+c+d are represents the coffee bot, the e option represents the network mapper&bruteforcing tool, the f option represents the banner grabbing feature, the g option represents the calculator function.
 
 # Sign up, Sign in, Forgot Password and Orders History functions(a+b+c+d in the main menu) ==>
 # CoffeeBot
@@ -30,8 +30,12 @@ Coffee bot combined with Cyber Security tools written in python.
 
 9. === THAT'S IT FOR THE COFFEE BOT EXPLENATION ===
 
-# Network Mapper function(e in the main menu)
+# Network Mapper function(e in the main menu) ==>
 # Network Mapper&Brute Force tool
-1.  
+1. Once you choose the e option, you input the target ip address and the funtion targetavailablity sends ping to the target if there is an answer the code consider the target to available.
+
+2. Once the code considered the target scanned to available it will send 'syn' packet to all possible ports, from where there is 'syn-ack' packet back the port will be considered to bo open, in the end of the scan you'll get a list of all open ports.
+
+3. If the scan will find port 22 open it will offer you to preform brute force on the ssh service, don't forget to configure the PasswordList.txt file as you wish first.
 
 
