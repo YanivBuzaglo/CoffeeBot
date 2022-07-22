@@ -32,10 +32,26 @@ Coffee bot combined with Cyber Security tools written in python.
 
 # Network Mapper function(e in the main menu) ==>
 # Network Mapper&Brute Force tool
-1. Once you choose the e option, you input the target ip address and the funtion targetavailablity sends ping to the target if there is an answer the code consider the target to available.
+1. Once you choose the e option, you'll need to input the target ip address and the funtion targetavailablity sends ping to the target if there is an answer the code consider the target to available.
 
 2. Once the code considered the target scanned to available it will send 'syn' packet to all possible ports, from where there is 'syn-ack' packet back the port will be considered to bo open, in the end of the scan you'll get a list of all open ports.
 
 3. If the scan will find port 22 open it will offer you to preform brute force on the ssh service, don't forget to configure the PasswordList.txt file as you wish first.
 
+4. === THAT'S IT FOR THE Network Mapper&Brute Force EXPLENATION ===
 
+# Banner Grabbing function(f in the main menu) ==>
+# Banner Grabbing tool
+1. Once you choose the f option, you'll need to input the target ip address and a port to scan, if the host is available and the port is open you'll get the banner of the apache,ssh ftp
+etc.
+
+2. === THAT'S IT FOR THE Banner Grabbing EXPLENATION ===
+
+# Calculator function(g in the main menu)
+# Calculator
+
+1. This piece of code functions as a calculator, written in python language .
+
+2. The code able to handle all errors possible for him, so it will not stop running until the user ask it to.
+
+3. In the first input section insert the first number to the calculator, in the second section insert the operation to the calculator from the listed operations:+ , - , *, /, %, in the third section insert the second number to the calculator.
