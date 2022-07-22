@@ -16,14 +16,12 @@ Coffee bot combined with Cyber Security tools written in python.
 
 2. If your password is over 8 characters contains at least one uppercase letter and at least one digit and your email address is not registered before you will be able to continue using this bot.
 
-3. Once you successfully done section 7, you'll get email to the mail address you registered with, a mail containing six digits code for two step authentication.
+3. Once you successfully done section 2, you'll get email to the mail address you registered with, a mail containing six digits code for two step authentication.
 
 4. Once you inserted the code and the sign up process is complete, you'll be transferred to the sign in function.
 
 5. You'll need to sign in with your email and password from the previous step, this function preforms two step authentication, insert the six digits code.
 
 6. Once the sign in process is done, you will be trsnferred to the menu of the coffee bot.
-
-7.
 
 
