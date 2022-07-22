@@ -1,4 +1,5 @@
 #My coffee bot Yaniv Bouzaglo version 1.3
+import email
 import socket
 import pymongo
 import time
@@ -48,6 +49,7 @@ def Verfication_Mail(email,body):
         return False
 
 def sign_up():
+    global email
     while True:
         try:
             print("Sign up tp the bot.")
@@ -114,6 +116,7 @@ def code_gen():
     code = random.randint(100000,999999)
     return code
 def sign_in():
+    global email
     print("Sign in to the bot.")
     global inp_a
     print(f"This bot uses two step authentication.")
@@ -137,6 +140,7 @@ Hye there, In order to sign in to our coffee bot please insert the code {code} t
                 code_input = int(input("Insert the six digits code here ==> "))
                 if code_input == code:
                     print("Signed in successfully!")
+                    return True
                     break
                 else:
                     print("Authentication failed!\nDisconnecting....")
@@ -254,8 +258,41 @@ def Banner_Grabbing():
         except:
             continue
     main()
+def Menu_Inp(email):
+    menu_input = input("Please choose from the list ahead:\n"
+    f"[a] {menu[0]}\n\n"
+    f"[b] {menu[1]}\n\n"
+    f"[c] {menu[2]}\n\n"
+    f"[d] {menu[3]}\n\n"
+    f"[e] {menu[4]}\n\n"
+    f"[f] {menu[5]}\n\n"
+     "----- INSERT YOUR PICK HERE ----- > ")
+    while True:
+        if menu_input == 'a' or menu_input == 'A':
+            order = menu[0]
+            break
+        elif menu_input == 'b' or menu_input == 'B':
+            order = menu[1]
+            break
+        elif menu_input == 'c' or menu_input == 'C':
+            order = menu[2]
+            break
+        elif menu_input == 'd' or menu_input == 'D':
+            order = menu[3]
+            break
+        elif menu_input == 'e' or menu_input == 'E':
+            order = menu[4]
+            break
+        elif menu_input == 'f' or menu_input == 'F':
+            order = menu[5]
+            break
+        else:
+            pass 
+    tme = time.ctime(time.time())
+    menu_input_dict = {"Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
+    orders_history.insert_one(menu_input_dict)
 def main():
-    welcome_options_input = input("Choose from the list ahead :\n"
+    welcome_options_input = input("Please choose from the list ahead :\n"
     f"{welcome_options[0]}\n\n"
     f"{welcome_options[1]}\n\n"
     f"{welcome_options[2]}\n\n"
@@ -264,9 +301,20 @@ def main():
     "----- INSERT YOUR PICK HERE ----- > ")
     if welcome_options_input == 'a' or welcome_options_input == 'A':
         sign_up()
-        sign_in()
+        if sign_in() == True:
+            Menu_Inp(email)
+        else:
+            print("Authentication proccess failed\nREDIRECTING.......")
+            time.sleep(3)
+            main()
     elif welcome_options_input == 'b' or welcome_options_input == 'B':
-        sign_in()
+        if sign_in() == True:
+            Menu_Inp(email)
+            
+        else:
+            print("Authentication proccess failed\nREDIRECTING.......")
+            time.sleep(3)
+            main()
     elif  welcome_options_input == 'c' or welcome_options_input == 'C':
         Forgot_Password()
     elif welcome_options_input == 'd' or welcome_options_input == 'D':
