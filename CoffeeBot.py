@@ -312,7 +312,7 @@ def Calculator():
         while True:
             try:
                 num1 = int(input('num1: '))
-                action = input('+,-,/,*,% ')
+                action = input('Please choose from this actions == > +,-,/,*,% ')
                 num2 = int(input('num2: '))
                 if action == '+':
                     print(plus(num1,num2))
