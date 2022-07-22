@@ -2,6 +2,7 @@
 import email
 import socket
 import pymongo
+import imghdr
 import time
 import ssl
 from email.message import EmailMessage
@@ -47,7 +48,28 @@ def Verfication_Mail(email,body):
     except:
         print("Check the mail address and try again please.")
         return False
+def SendOrder(email,order):
+    Sender_Email = f"{env1}"
+    Reciever_Email = f"{email}"
+    Password = f"{env2}"
 
+    newMessage = EmailMessage()                         
+    newMessage['Subject'] = f"Hello there ." 
+    newMessage['From'] = Sender_Email                   
+    newMessage['To'] = Reciever_Email                   
+    newMessage.set_content(f'your {order} order, PLEASE ENJOY!') 
+
+    with open('Order.jpg', 'rb') as f:
+        image_data = f.read()
+        image_type = imghdr.what(f.name)
+        image_name = f.name
+
+    newMessage.add_attachment(image_data, maintype='image', subtype=image_type, filename=image_name)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        
+        smtp.login(Sender_Email, Password)          
+        smtp.send_message(newMessage)
 def sign_up():
     global email
     while True:
@@ -290,6 +312,19 @@ def Menu_Inp(email):
             pass 
     tme = time.ctime(time.time())
     menu_input_dict = {"Type":"Orders History","Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
+    print("Mmmm, Great chice sir, just chill, we'll get the coffee to you.")
+    time.sleep(2)
+    print("In a moment.....")
+    time.sleep(2)
+    print("Adding the secret in ingredient.....")
+    time.sleep(2)
+    sec = 3
+    for i in range(3):
+        print(f"Order on it's way to you in {sec}...")
+        sec-=1
+        time.sleep(1)
+    print("Order on the way!!!")
+    SendOrder(email,order)
     orders_history.insert_one(menu_input_dict)
 def Calculator():
 #calculator
