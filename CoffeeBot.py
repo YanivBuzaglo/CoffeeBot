@@ -255,6 +255,7 @@ def Network_Mapper():
         SSHconn = paramiko.SSHClient()
         SSHconn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         for password in passwords:
+            
             try:
                 SSHconn.connect(target, port=int(port), username=user, password=password, timeout=1)
                 print(f"Success, the {password} logged you in the server!")
@@ -290,6 +291,7 @@ def Menu_Inp(email):
     f"[d] {menu[3]}\n\n"
     f"[e] {menu[4]}\n\n"
     f"[f] {menu[5]}\n\n"
+    "Type exit or quit to back to main menu.\n"
      "----- INSERT YOUR PICK HERE ----- > ")
     while True:
         if menu_input == 'a' or menu_input == 'A':
@@ -310,8 +312,12 @@ def Menu_Inp(email):
         elif menu_input == 'f' or menu_input == 'F':
             order = menu[5]
             break
+        elif menu_input == 'exit' or menu_input == 'Exit' or menu_input == 'quit' or menu_input == 'q':
+            print("Disconnecting.....")
+            time.sleep(3)
+            main()
         else:
-            pass 
+            Menu_Inp(email)
     tme = time.ctime(time.time())
     menu_input_dict = {"Type":"Orders History","Email":f"{email}","Item":f"{order}","Time":f"{tme}"}
     print("Mmmm, Great choice sir, just chill, we'll get the coffee to you.")
