@@ -55,3 +55,5 @@ etc.
 2. The code able to handle all errors possible for him, so it will not stop running until the user ask it to.
 
 3. In the first input section insert the first number to the calculator, in the second section insert the operation to the calculator from the listed operations:+ , - , *, /, %, in the third section insert the second number to the calculator.
+
+4. === THAT'S IT FOR THE Calculator EXPLENATION ===
