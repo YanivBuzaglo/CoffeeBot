@@ -176,7 +176,7 @@ def sign_in():
      
 def Forgot_Password():
     email = input("We'll send an email to reset your password, INSERT EMAIL HERE ==> ")
-    for i in database.find({"Type":"Registered","Email":f"{email}"}):
+    for i in database.find({"Email":f"{email}"}):
         old_password = {"Password":i["Password"]}
         new_password_input = input("Insert your new password here ==> ")
         new_password = {"$set":{"Password":f"{new_password_input}"}}
